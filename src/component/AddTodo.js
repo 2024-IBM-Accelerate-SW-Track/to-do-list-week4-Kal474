@@ -9,8 +9,9 @@ class AddTodo extends Component {
   constructor() {
     super();
     this.state = {
+      id: Math.floor(Math.random() * 10000),
       content: "",
-      date: "",
+      date: new Date().toLocaleString('en-US'),
       duedate: null
     };
   }
@@ -20,14 +21,15 @@ class AddTodo extends Component {
   handleChange = (event) => {
     this.setState({
       content: event.target.value,
-      date: Date().toLocaleString('en-US')
+      date: new Date().toLocaleString('en-US')
     });
   };
   // The handleDueDateChange function updates the react state with the new due date input value provided from the user.
   // "event" is the defined action a user takes.
   handleDueDateChange = (event) => {
     this.setState({
-      duedate: new Date(event).toLocaleDateString()
+      duedate: event
+      //new Date(event).toLocaleDateString()
     });
   };
   // The handleSubmit function collects the forms input and puts it into the react state.
@@ -41,9 +43,11 @@ class AddTodo extends Component {
         id: this.state.id,
         task: this.state.content,
         currentDate: this.state.date,
-        dueDate: this.state.duedate
+        dueDate: this.state.duedate.toLocaleDateString()
       };
 
+      console.log('Submitting:', jsonObject); 
+      
       Axios({
         method: "POST",
         url: "http://localhost:8000/add/item", // Replace 3001 with your port number
@@ -57,7 +61,7 @@ class AddTodo extends Component {
         this.setState({
           id: Math.floor(Math.random() * 10000),
           content: "",
-          date: "",
+          date: new Date().toLocaleString('en-US'),
           duedate: null
         });
       }).catch(error => {
