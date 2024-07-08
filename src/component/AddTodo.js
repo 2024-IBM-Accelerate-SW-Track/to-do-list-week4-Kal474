@@ -19,17 +19,14 @@ class AddTodo extends Component {
   handleChange = (event) => {
     this.setState({
       content: event.target.value,
-      date: Date()
+      date: Date().toLocaleString('en-US')
     });
   };
-
-  handleDateChange = (event) => {
-    let date = null
-    if(event != null){
-      date = new Date(event)
-    }
+  // The handleDueDateChange function updates the react state with the new due date input value provided from the user.
+  // "event" is the defined action a user takes.
+  handleDueDateChange = (event) => {
     this.setState({
-      duedate: date
+      duedate: new Date(event).toLocaleDateString()
     });
   };
   // The handleSubmit function collects the forms input and puts it into the react state.
@@ -58,21 +55,23 @@ class AddTodo extends Component {
       // 4. The value of the text field also should reflect the local state of this component.
       <div>
         <TextField
+          data-testid="new-item-input"
           label="Add New Item"
           variant="outlined"
           onChange={this.handleChange}
           value={this.state.content}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns}>         
-          <DesktopDatePicker
-              id="new-item-date"
-              label="Due Date"
-              value={this.state.duedate}
-              onChange={this.handleDateChange}
-              renderInput={(params) => <TextField {...params} />}
-          />
+        	<DesktopDatePicker
+          	id="new-item-date"
+            label="Due Date"
+            value={this.state.duedate}
+            onChange={this.handleDueDateChange}
+            renderInput={(params) => <TextField {...params} />}
+        	/>
         </LocalizationProvider>
         <Button
+          data-testid="new-item-button"
           style={{ marginLeft: "10px" }}
           onClick={this.handleSubmit}
           variant="contained"
